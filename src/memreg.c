@@ -32,14 +32,14 @@ int mem_index(uocta addr, int depth)
   return (addr >> ((7 - depth) * 0)) & 0xff;
 }
 
-int mem_touch(uocta addr, void *ptr, int depth)
+byte *mem_find(uocta addr, void *ptr, int depth)
 {
   void **node;
   int i;
 
   /* Sanity check: */
   if(ptr == NULL || depth < 0 || depth >= 7)
-    return -1;
+    return NULL;
 
   /* Get the node list and the iterator for the next level: */
   node = (void **)ptr;
@@ -55,7 +55,7 @@ int mem_touch(uocta addr, void *ptr, int depth)
 	{
 	  node[i] = malloc(sizeof(byte[0x100]));
 	  if(node[i] == NULL)
-	    return 1;
+	    return NULL;
 	  for(j = 0; j < 0x100; j++)
 	    ((byte *)(node[i]))[j] = 0;
 	}
@@ -65,7 +65,7 @@ int mem_touch(uocta addr, void *ptr, int depth)
 	{
 	  node[i] = malloc(sizeof(void *[0x100]));
 	  if(node[i] == NULL)
-	    return 1;
+	    return NULL;
 	  for(j = 0; j < 0x100; j++)
 	    ((void **)(node[i]))[j] == NULL;
 	}
@@ -74,10 +74,10 @@ int mem_touch(uocta addr, void *ptr, int depth)
 
   /* Bottom of tree: */
   if(depth == 6)
-    return 0;
+    return (byte *)(node[i]);
 
   /* Next iteration: */
-  mem_touch(addr, node[i], depth + 1);
+  mem_find(addr, node[i], depth + 1);
 
 }
 

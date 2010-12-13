@@ -69,8 +69,8 @@ extern "C"
   int mem_index(uocta addr, int depth);
 
   /**
-     @brief Recursive function to create the existing memory address
-     and initialize to zero if it doesn't already exist.
+     @brief Recursive function to find a memory location (and create
+     it if it doesn't exist).
 
      @param addr The memory address.
 
@@ -80,10 +80,10 @@ extern "C"
      @param depth The depth in the memory tree for the current
      iteration (should be 0 for the first iteration).
 
-     @return 0 on success, -1 on sanity check failure, 1 on allocation
-     error.
+     @return A pointer to the memory location on success or NULL on
+     failure.
    */
-  int mem_touch(uocta addr, void *ptr, int depth);
+  byte *mem_find(uocta addr, void *ptr, int depth);
 
   /**
      @brief Initializes memory & registers.
