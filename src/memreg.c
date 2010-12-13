@@ -74,7 +74,7 @@ byte *mem_find(uocta addr, void *ptr, int depth)
 
   /* Bottom of tree: */
   if(depth == 6)
-    return (byte *)(node[i]);
+    return ((byte **)(node[i]))[addr & 0xff];
 
   /* Next iteration: */
   mem_find(addr, node[i], depth + 1);
