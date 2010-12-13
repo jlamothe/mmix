@@ -50,7 +50,7 @@ int mem_touch(uocta addr, void *ptr, int depth)
     {
       int j;
 
-      /* Check for of tree: */
+      /* Bottom of tree: */
       if(depth == 6)
 	{
 	  node[i] = malloc(sizeof(byte[0x100]));
@@ -60,7 +60,7 @@ int mem_touch(uocta addr, void *ptr, int depth)
 	    ((byte *)(node[i]))[j] = 0;
 	}
 
-      /* Otherwise: */
+      /* Not at bottom of tree: */
       else
 	{
 	  node[i] = malloc(sizeof(void *[0x100]));
@@ -72,8 +72,9 @@ int mem_touch(uocta addr, void *ptr, int depth)
 
     }
 
-  /* Check for bottom of tree: */
-  return 0;
+  /* Bottom of tree: */
+  if(depth == 6)
+    return 0;
 
   /* Next iteration: */
   mem_touch(addr, node[i], depth + 1);
