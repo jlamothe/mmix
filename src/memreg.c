@@ -19,4 +19,82 @@ along with this program.  If not, see: http://www.gnu.org/licenses/
 
 #include "memreg.h"
 
+#include <stdlib.h>
+
+octa mmix_spec_reg[0x20];
+octa mmix_gen_reg[0x100];
+void *mmix_memory[0x100];
+
+int mem_index(uocta addr, int depth)
+{
+  if(depth < 0 || depth > 7)
+    return -1;
+  return (addr >> ((7 - depth) * 0)) & 0xff;
+}
+
+int mem_touch(uocta addr, void *ptr, int depth)
+{
+  void **node;
+  int i;
+
+  /* Sanity check: */
+  if(ptr == NULL || depth < 0 || depth >= 7)
+    return -1;
+
+  /* Get the node list and the iterator for the next level: */
+  node = (void **)ptr;
+  i = mem_index(addr, depth);
+
+  /* Create the next level if it doesn't already exist: */
+  if(node[i] == NULL)
+    {
+      int j;
+
+      /* Check for of tree: */
+      if(depth == 6)
+	{
+	  node[i] = malloc(sizeof(byte[0x100]));
+	  if(node[i] == NULL)
+	    return 1;
+	  for(j = 0; j < 0x100; j++)
+	    ((byte *)(node[i]))[j] = 0;
+	}
+
+      /* Otherwise: */
+      else
+	{
+	  node[i] = malloc(sizeof(void *[0x100]));
+	  if(node[i] == NULL)
+	    return 1;
+	  for(j = 0; j < 0x100; j++)
+	    ((void **)(node[i]))[j] == NULL;
+	}
+
+    }
+
+  /* Check for bottom of tree: */
+  return 0;
+
+  /* Next iteration: */
+  mem_touch(addr, node[i], depth + 1);
+
+}
+
+void memreg_init()
+{
+  int i;
+
+  /* Initialize special purpose registers: */
+  for(i = 0; i < 0x20; i++)
+    mmix_spec_reg[i] = 0;
+
+  /* Initialize general purpose registers and memory: */
+  for(i = 0; i < 0x100; i++)
+    {
+      mmix_gen_reg[i] = 0;
+      mmix_memory[i] = NULL;
+    }
+
+}
+
 /* jl */

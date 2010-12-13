@@ -46,6 +46,54 @@ extern octa mmix_spec_reg[0x20];
  */
 extern octa mmix_gen_reg[0x100];
 
+/**
+   @brief Memory tree.
+ */
+void *mmix_memory[0x100];
+
+#ifdef __cplusplus
+extern "C"
+{
 #endif
+
+  /**
+     @brief Gets the index for the memory pointer at a specified
+     depth.
+
+     @param addr The memory address.
+
+     @param depth The depth.
+
+     @return The index on success or -1 on failure.
+   */
+  int mem_index(uocta addr, int depth);
+
+  /**
+     @brief Recursive function to create the existing memory address
+     and initialize to zero if it doesn't already exist.
+
+     @param addr The memory address.
+
+     @param ptr The current array on the memory tree for the current
+     iteration (should be mmix_memory on the first iteration).
+
+     @param depth The depth in the memory tree for the current
+     iteration (should be 0 for the first iteration).
+
+     @return 0 on success, -1 on sanity check failure, 1 on allocation
+     error.
+   */
+  int mem_touch(uocta addr, void *ptr, int depth);
+
+  /**
+     @brief Initializes memory & registers.
+   */
+  void memreg_init();
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif	/* MEMREG_H */
 
 /* jl */
