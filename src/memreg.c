@@ -29,7 +29,7 @@ int mem_index(uocta addr, int depth)
 {
   if(depth < 0 || depth > 7)
     return -1;
-  return (addr >> ((7 - depth) * 0)) & 0xff;
+  return (addr >> ((7 - depth) * 8)) & 0xff;
 }
 
 byte *mem_find(uocta addr, void *ptr, int depth)
@@ -38,7 +38,7 @@ byte *mem_find(uocta addr, void *ptr, int depth)
   int i;
 
   /* Sanity check: */
-  if(ptr == NULL || depth < 0 || depth >= 7)
+  if(ptr == NULL || depth < 0 || depth > 6)
     return NULL;
 
   /* Get the node list and the iterator for the next level: */
