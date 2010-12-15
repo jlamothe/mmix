@@ -16,7 +16,7 @@
 # along with this program.  If not, see: http://www.gnu.org/licenses/
 
 bin_PROGRAMS = mmix
-noinst_HEADERS = memreg.h mmixtypes.h
+noinst_HEADERS = memreg.h mmixtypes.h opcodes.h
 mmix_SOURCES = main.c memreg.c
 
 # jl

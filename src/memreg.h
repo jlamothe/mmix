@@ -30,10 +30,10 @@ along with this program.  If not, see: http://www.gnu.org/licenses/
 /**
    @brief Special purpose register IDs.
  */
-enum { mmix_rA = 0, mmix_rB, mmix_rC, mmix_rD, mmix_rE, mmix_rF,
-       mmix_rG, mmix_rH, mmix_rI, mmix_rJ, mmix_rK, mmix_rL, mmix_rM,
-       mmix_rN, mmix_rO, mmix_rP, mmix_rQ, mmix_rR, mmix_rS, mmix_rT,
-       mmix_rU, mmix_rV, mmix_rW, mmix_rX, mmix_rY, mmix_rZ, mmix_rBB,
+enum { mmix_rA, mmix_rB, mmix_rC, mmix_rD, mmix_rE, mmix_rF, mmix_rG,
+       mmix_rH, mmix_rI, mmix_rJ, mmix_rK, mmix_rL, mmix_rM, mmix_rN,
+       mmix_rO, mmix_rP, mmix_rQ, mmix_rR, mmix_rS, mmix_rT, mmix_rU,
+       mmix_rV, mmix_rW, mmix_rX, mmix_rY, mmix_rZ, mmix_rBB,
        mmix_rTT, mmix_rWW, mmix_rXX, mmix_rYY, mmix_rZZ };
 
 /**
