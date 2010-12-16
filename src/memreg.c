@@ -25,14 +25,12 @@ octa mmix_spec_reg[0x20];
 octa mmix_gen_reg[0x100];
 void *mmix_memory[0x100];
 
-int mem_index(uocta addr, int depth)
+byte *mem_find(uocta addr)
 {
-  if(depth < 0 || depth > 7)
-    return -1;
-  return (addr >> ((7 - depth) * 8)) & 0xff;
+  return mem_find_iter(addr, mmix_memory, 0);
 }
 
-byte *mem_find(uocta addr, void *ptr, int depth)
+byte *mem_find_iter(uocta addr, void *ptr, int depth)
 {
   void **node;
   int i;
@@ -77,8 +75,15 @@ byte *mem_find(uocta addr, void *ptr, int depth)
     return &((byte *)(node[i]))[addr & 0xff];
 
   /* Next iteration: */
-  mem_find(addr, node[i], depth + 1);
+  mem_find_iter(addr, node[i], depth + 1);
 
+}
+
+int mem_index(uocta addr, int depth)
+{
+  if(depth < 0 || depth > 7)
+    return -1;
+  return (addr >> ((7 - depth) * 8)) & 0xff;
 }
 
 void memreg_init()

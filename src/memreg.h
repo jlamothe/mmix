@@ -42,7 +42,7 @@ enum { mmix_rA, mmix_rB, mmix_rC, mmix_rD, mmix_rE, mmix_rF, mmix_rG,
 extern octa mmix_spec_reg[0x20];
 
 /**
-   @brief General purpose reigsters.
+   @brief General purpose registers.
  */
 extern octa mmix_gen_reg[0x100];
 
@@ -57,16 +57,12 @@ extern "C"
 #endif
 
   /**
-     @brief Gets the index for the memory pointer at a specified
-     depth.
+     @brief Locates a memory address.
 
-     @param addr The memory address.
-
-     @param depth The depth.
-
-     @return The index on success or -1 on failure.
+     @return A pointer to the memory location on success or NULL on
+     failure.
    */
-  int mem_index(uocta addr, int depth);
+  byte *mem_find(uocta addr);
 
   /**
      @brief Recursive function to find a memory location (and create
@@ -80,10 +76,24 @@ extern "C"
      @param depth The depth in the memory tree for the current
      iteration (should be 0 for the first iteration).
 
+     @note This function is generally called by mem_find().
+
      @return A pointer to the memory location on success or NULL on
      failure.
    */
-  byte *mem_find(uocta addr, void *ptr, int depth);
+  byte *mem_find_iter(uocta addr, void *ptr, int depth);
+
+  /**
+     @brief Gets the index for the memory pointer at a specified
+     depth.
+
+     @param addr The memory address.
+
+     @param depth The depth.
+
+     @return The index on success or -1 on failure.
+   */
+  int mem_index(uocta addr, int depth);
 
   /**
      @brief Initializes memory & registers.
